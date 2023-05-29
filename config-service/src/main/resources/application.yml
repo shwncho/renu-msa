@@ -1,0 +1,38 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: configservice
+  cloud:
+    config:
+      server:
+        git:
+          uri: git@github.com:shwncho/config-repo.git
+          ignoreLocalSshSettings: true
+          default-label: main
+          private-key: |
+            -----BEGIN EC PRIVATE KEY-----
+            MHcCAQEEIHMj3w13YO4QnSsBURaavgsVgo6FDPY4Mjm0cJGNYWaHoAoGCCqGSM49
+            AwEHoUQDQgAEoLNQ2AqCoIHZeOmVIQiQqYKGfy4IWbOStE5uJlKEIHw825lIwYTY
+            QHgwGUhL0z9DT/qXT/s7f5oet9GoA4LOfw==
+            -----END EC PRIVATE KEY-----
+          host-key: AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
+          hostKeyAlgorithm: ecdsa-sha2-nistp256
+          strict-host-key-checking: false
+          timeout: 4
+
+        encrypt:
+          enabled: false
+
+encrypt:
+  key: key-brian
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true

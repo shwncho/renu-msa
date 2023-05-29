@@ -1,0 +1,94 @@
+version: "3"
+
+services:
+  eureka-server:
+    container_name: eureka-server
+    build:
+      context: ./eureka-server/
+      dockerfile: Dockerfile
+    ports:
+      - 8761:8761
+    networks:
+      - renu-network
+
+  config-service:
+    container_name: config-service
+    build:
+      context: ./config-service/
+      dockerfile: Dockerfile
+    ports:
+      - 8888:8888
+    networks:
+      - renu-network
+
+  apigateway-service:
+    container_name: apigateway-service
+    build:
+      context: ./apigateway-service/
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      - eureka-server
+    networks:
+      - renu-network
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
+
+  authentication:
+    container_name: authentication
+    build:
+      context: ./authentication/
+      dockerfile: Dockerfile
+    ports:
+      - 8081:8081
+    depends_on:
+      - eureka-server
+      - config-service
+    restart: always
+    networks:
+      - renu-network
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
+      - spring.config.import=optional:configserver:http://config-service:8888/
+
+  user-service:
+    container_name: user-service
+    build:
+      context: ./user-service/
+      dockerfile: Dockerfile
+    depends_on:
+      - eureka-server
+      - config-service
+      - apigateway-service
+    restart: always
+    networks:
+      - renu-network
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
+      - spring.config.import=optional:configserver:http://config-service:8888/
+
+  nutrient-service:
+    container_name: nutrient-service
+    build:
+      context: ./nutrient-service
+      dockerfile: Dockerfile
+    depends_on:
+      - eureka-server
+      - config-service
+      - apigateway-service
+    restart: always
+    networks:
+      - renu-network
+    environment:
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka/
+      - spring.config.import=optional:configserver:http://config-service:8888/
+
+
+networks:
+  renu-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.0.0/16
+          gateway: 172.18.0.1
