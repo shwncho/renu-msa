@@ -23,4 +23,5 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh
+        include: "*"
+        exclude: "env,beans"
