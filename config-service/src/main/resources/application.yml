@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: configservice
+    name: config-service
   cloud:
     config:
       server:
@@ -20,7 +20,6 @@ spring:
           host-key: AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBEmKSENjQEezOmxkZMy7opKgwFB9nkt5YRrYMjNuG5N87uRgg6CLrbo5wAdT/y6v0mKV0U2w0WZ2YB/++Tpockg=
           hostKeyAlgorithm: ecdsa-sha2-nistp256
           strict-host-key-checking: false
-          timeout: 4
 
         encrypt:
           enabled: false

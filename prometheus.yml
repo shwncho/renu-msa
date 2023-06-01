@@ -1,0 +1,12 @@
+global:
+  scrape_interval:     5s
+  evaluation_interval: 5s
+scrape_configs:
+  - job_name: 'user-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['user-service']
+  - job_name: 'nutrient-service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['nutrient-service']
